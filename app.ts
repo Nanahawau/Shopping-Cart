@@ -7,13 +7,13 @@ import cors from 'cors';
 import debug from 'debug';
 import bodyParser from "body-parser";
 // @ts-ignore
-import {BaseRouteConfig} from "./routes/BaseRouteConfig";
+import {BaseRouteConfig} from "./src/routes/BaseRouteConfig";
 import * as expressWinston from 'express-winston';
 import winston from "winston";
 // @ts-ignore
-import {CartRoutes} from "./routes/CartRoutes";
+import {CartRoutes} from "./src/routes/CartRoutes";
 // @ts-ignore
-import databaseConfig from "./utilities/database/connection";
+import databaseConfig from "./src/utilities/database/connection";
 import {createConnection} from "typeorm";
 
 
