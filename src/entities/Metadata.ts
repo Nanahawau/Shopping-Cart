@@ -8,10 +8,10 @@ export class Metadata extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column("varchar", { length: 200 })
     brand!: string;
 
-    @Column()
+    @Column("varchar", { length: 200 })
     additionalCategory!: string;
 
     @Column(() => Audit)

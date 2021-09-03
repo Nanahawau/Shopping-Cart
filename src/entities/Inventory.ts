@@ -8,7 +8,7 @@ export class Inventory extends BaseEntity{
     @PrimaryGeneratedColumn()
     id! : number
 
-    @Column()
+    @Column("bigint")
     quantity!: number;
 
     @Column(() => Audit)

@@ -1,8 +1,7 @@
-import {BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 // @ts-ignore
 import {Audit} from './Audit';
 import {Inventory} from "./Inventory";
-import {JoinColumn} from "typeorm/browser";
 import {Category} from "./Category";
 import {Discount} from "./Discount";
 import {Metadata} from "./Metadata";
@@ -13,19 +12,19 @@ export class Product extends BaseEntity{
     @PrimaryGeneratedColumn()
     id! : number
 
-    @Column()
+    @Column("varchar", { length: 200 })
     name!: string;
 
-    @Column()
+    @Column("varchar", { length: 500 })
     description!: string;
 
-    @Column()
+    @Column("bigint")
     SKU!: number;
 
-    @Column()
-    price!: number;
+    @Column("bigint")
+    price!: bigint;
 
-    @Column()
+    @Column("bigint")
     quantity!: number;
 
     @Column(() => Audit)

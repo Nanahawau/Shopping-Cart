@@ -1,11 +1,9 @@
 import {
     BaseEntity,
     Column,
-    CreateDateColumn,
     Entity,
     OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
 } from "typeorm";
 import {Audit} from "./Audit";
 import {Cart} from "./Cart";
@@ -17,7 +15,7 @@ export class User extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({unique: true})
+    @Column("varchar", {unique: true,length: 200})
     email!: string;
 
     @Column("varchar", { length: 200 })

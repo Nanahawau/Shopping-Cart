@@ -79,24 +79,21 @@ class App {
          */
         createConnection(databaseConfig)
             .then((_connection) => {
-                app.listen(PORT, () => {
-                    info(`Server is running on port, ${PORT}`);
-                });
 
-                routes.forEach((route: BaseRouteConfig) => {
-                    info(`Routes configured for ${route.name}`);
-                });
             })
             .catch((err) => {
-                info("Unable to connect to db", err);
+                console.log("Unable to connect to db", err);
                 process.exit(1);
             });
-        // app.listen(PORT, () => {
-        //     info(`Listening on port ${PORT}`);
-        //     routes.forEach((route: BaseRouteConfig) => {
-        //         debug(`Routes configured for ${route.name}`);
-        //     });
-        // });
+
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on port, ${PORT}`);
+        });
+
+        routes.forEach((route: BaseRouteConfig) => {
+            console.log(`Routes configured for ${route.name}`);
+        });
     }
 
 }

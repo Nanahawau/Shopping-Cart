@@ -8,10 +8,10 @@ export class Category extends BaseEntity{
     @PrimaryGeneratedColumn()
     id! : bigint
 
-    @Column()
+    @Column("varchar", { length: 200 })
     name!: string;
 
-    @Column()
+    @Column("varchar", { length: 200 })
     description!: string;
 
     @Column(() => Audit)

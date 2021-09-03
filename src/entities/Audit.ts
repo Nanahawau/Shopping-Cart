@@ -8,7 +8,7 @@ export class Audit {
     @CreateDateColumn()
     createdAt!: Date;
 
-    @Column()
+    @Column("varchar", { length: 200 })
     modifiedBy!: string;
 
     @UpdateDateColumn()

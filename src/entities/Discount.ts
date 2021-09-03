@@ -9,13 +9,13 @@ export class Discount extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column("varchar", { length: 200 })
     name!: string
 
-    @Column()
+    @Column("varchar", { length: 200 })
     description!: string
 
-    @Column()
+    @Column("bool")
     active!: boolean
 
     @Column({
@@ -25,7 +25,7 @@ export class Discount extends BaseEntity{
     })
     type!: DiscountType
 
-    @Column()
+    @Column("bigint")
     value!: bigint
 
 

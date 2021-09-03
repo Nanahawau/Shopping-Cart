@@ -10,10 +10,10 @@ export class Cart extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: bigint
 
-    @Column()
+    @Column("varchar", { length: 200 })
     sessionId!: string;
 
-    @Column()
+    @Column("bigint")
     total!: bigint;
 
     @Column({
