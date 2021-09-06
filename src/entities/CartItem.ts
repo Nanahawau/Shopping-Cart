@@ -3,6 +3,7 @@ import {User} from "./User";
 import {Cart} from "./Cart";
 import {Discount} from "./Discount";
 import {Product} from "./Product";
+import {ProductVariation} from "./ProductVariation";
 
 @Entity({name: 'CartItem'})
 export class CartItem {
@@ -10,19 +11,19 @@ export class CartItem {
     @PrimaryGeneratedColumn()
     id! : number
 
-    @Column("bigint")
-    price! : number
-
-    @Column("bigint")
-    discount!: number
+    // @Column("bigint")
+    // price! : number
+    //
+    // @Column("bigint")
+    // discount!: number
 
     @Column("bigint")
     quantity!: number;
 
 
-    @OneToOne(() => Product, product => product.cartItem)
+    @OneToOne(() => ProductVariation, productVariant => productVariant.cartItem)
     @JoinColumn()
-    product!: Product;
+    productVariant!: ProductVariation;
 
     @ManyToOne(() => Cart, cart => cart.cartItems)
     cart!: Cart;

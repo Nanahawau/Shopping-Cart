@@ -7,6 +7,7 @@ import {ErrorResponse} from "../models/ErrorResponse";
 
 const log: debug.IDebugger = debug('app:product-controller');
 
+
 class ProductController {
     async getAllProducts(request: express.Request, response: express.Response) {
         try {

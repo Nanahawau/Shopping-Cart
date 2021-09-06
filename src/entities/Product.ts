@@ -33,9 +33,9 @@ export class Product {
     @IsNotEmpty()
     description!: string;
 
-    @Column("bigint")
-    @IsInt()
-    actualPrice!: number;
+    // @Column("bigint")
+    // @IsInt()
+    // actualPrice!: number;
 
     @OneToOne(() => Inventory, inventory => inventory.product)
     @JoinColumn()
@@ -52,9 +52,6 @@ export class Product {
     @OneToOne(() => Discount, discount => discount.product)
     @JoinColumn()
     discount!: Discount;
-
-    @OneToOne(() => CartItem, cartItem => cartItem.product)
-    cartItem!: CartItem;
 
 
     @OneToMany(() => ProductVariation, productVariation => productVariation.product)

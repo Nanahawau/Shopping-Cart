@@ -18,12 +18,22 @@ class CartMiddleware {
 
     }
 
-    async extractCartId (
+    async extractCartItemId(
         request: express.Request,
         response: express.Response,
         next: express.NextFunction
     ) {
         request.body.id = request.params.itemId;
+        next();
+    }
+
+
+    async extractCartId(
+        request: express.Request,
+        response: express.Response,
+        next: express.NextFunction
+    ) {
+        request.body.id = request.params.cartId;
         next();
     }
 }

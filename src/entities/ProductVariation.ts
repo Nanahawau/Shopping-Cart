@@ -1,14 +1,15 @@
 import {
     Column,
     Entity,
-  JoinTable,
+    JoinTable,
     ManyToMany,
-    ManyToOne,
+    ManyToOne, OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import {Product} from "./Product";
 import {IsInt, IsNotEmpty, IsString} from "class-validator";
 import {Variant} from "./Variant";
+import {CartItem} from "./CartItem";
 
 @Entity({name: 'ProductVariation'})
 export class ProductVariation {
@@ -23,7 +24,7 @@ export class ProductVariation {
 
     @Column("bigint")
     @IsInt()
-    quantity!: number;
+    stockLevel!: number;
 
     @Column("bigint")
     @IsInt()
@@ -34,10 +35,14 @@ export class ProductVariation {
     @IsNotEmpty()
     SKU!: string;
 
+    @Column("date")
+    expiry!: Date;
 
     @ManyToOne(() => Product, product => product.productVariations)
     product!: Product;
 
+    @OneToOne(() => CartItem, cartItem => cartItem.productVariant)
+    cartItem!: CartItem;
 
     @ManyToMany(() => Variant)
     @JoinTable()

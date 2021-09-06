@@ -1,11 +1,13 @@
 
-import {getConnection, getCustomRepository} from "typeorm";
+import {getConnection, getCustomRepository, getRepository} from "typeorm";
 import {Product} from "../entities/Product";
+import {ProductVariation} from "../entities/ProductVariation";
+import {User} from "../entities/User";
 
 class ProductService {
 
     list(limit: number, page: number): Promise<any> {
-        return getConnection().getRepository(Product).find({
+        return getRepository(Product).find({
             select: ['id', 'name', 'description'],
             skip: (page - 1) * limit,
             take: limit,
@@ -14,8 +16,12 @@ class ProductService {
     }
 
     readById(id: string): Promise<any> {
-        return getConnection().getRepository(Product).findOne(id,
+        return getRepository(Product).findOne(id,
             {relations: ['brand', 'category', 'productVariations', 'productVariations.variants']});
+    }
+
+    findProductVariationsById(id: number): Promise<any>  {
+        return getRepository(ProductVariation).findOne(id);
     }
 }
 

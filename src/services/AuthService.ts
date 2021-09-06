@@ -1,14 +1,19 @@
 import {getConnection, getCustomRepository} from "typeorm";
 import {User} from "../entities/User";
 import {UserRepository} from "../repositories/UserRepository";
+import {Cart} from "../entities/Cart";
+import {CartItem} from "../entities/CartItem";
 
 class AuthService {
 
     findByEmail(email: string): Promise<any> {
-        return getConnection().getRepository(User).findOne(email);
+        return getCustomRepository(UserRepository).findByEmail(email);
     }
 
 
+    // findByEmail(email: string): Promise<any> {
+    //     return getConnection().getRepository(User).findOneOrFail(email);
+    // }
 }
 
 export default new AuthService();

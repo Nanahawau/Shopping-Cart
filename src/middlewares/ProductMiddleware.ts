@@ -20,6 +20,19 @@ class ProductMiddleware {
 
     }
 
+    async validateProductVariantExists(request: express.Request,
+                                response: express.Response,
+                                next: express.NextFunction) {
+
+        const productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
+        if(!productVariant) {
+            response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(404, 'Bad Request', []))
+        } else {
+            next();
+        }
+
+    }
+
     async extractProductId(
         request: express.Request,
         response: express.Response,
@@ -28,6 +41,8 @@ class ProductMiddleware {
         request.body.id = request.params.productId;
         next();
     }
+
+
 }
 
 

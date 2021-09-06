@@ -11,7 +11,7 @@ export class Cart  {
     id!: number
 
     @Column("bigint")
-    total!: bigint;
+    total!: number;
 
     @Column({
         type: "enum",
@@ -21,8 +21,9 @@ export class Cart  {
     @IsBoolean()
     status!: CartStatus;
 
-
-    @OneToMany(() => CartItem, cartItem => cartItem.cart)
+    @OneToMany(() => CartItem, cartItem => cartItem.cart, {
+        onDelete: "CASCADE"
+    })
     cartItems!: CartItem[];
 
     @ManyToOne(() => User, user => user.carts)
