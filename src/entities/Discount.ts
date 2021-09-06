@@ -1,21 +1,26 @@
 import {BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Audit} from "./Audit";
 import {DiscountType} from "../enums/DiscountType";
 import {Product} from "./Product";
+import {IsBoolean, IsInt, IsNotEmpty, IsString} from "class-validator";
 
-@Entity({name: 'ProductDiscount'})
-export class Discount extends BaseEntity{
+@Entity({name: 'Discount'})
+export class Discount{
 
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Column("varchar", { length: 200 })
+    @IsString()
+    @IsNotEmpty()
     name!: string
 
     @Column("varchar", { length: 200 })
+    @IsString()
+    @IsNotEmpty()
     description!: string
 
     @Column("bool")
+    @IsBoolean()
     active!: boolean
 
     @Column({
@@ -26,11 +31,8 @@ export class Discount extends BaseEntity{
     type!: DiscountType
 
     @Column("bigint")
-    value!: bigint
-
-
-    @Column(() => Audit)
-    audit!: Audit;
+    @IsInt()
+    value!: number
 
     @OneToOne(() => Product, product => product.discount)
     product!: Product;

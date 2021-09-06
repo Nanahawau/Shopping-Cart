@@ -10,8 +10,26 @@ export class CartRoutes extends BaseRouteConfig {
     }
 
     configureRoutes(): express.Application {
-        this.app.route('/cart')
-            .get();
+        this.app.route('/cart/items')
+            .get(() => {
+
+            })
+            .post(() => {
+
+            });
+
+
+        this.app.route('/cart/items/:itemId')
+            .get(() => {
+
+            })
+            .put(() => {
+
+            })
+            .delete(() => {
+
+            })
+
         return this.app;
     }
 

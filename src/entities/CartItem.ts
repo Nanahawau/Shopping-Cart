@@ -1,25 +1,21 @@
 import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Audit} from "./Audit";
 import {User} from "./User";
 import {Cart} from "./Cart";
 
 @Entity({name: 'CartItem'})
-export class CartItem extends BaseEntity {
+export class CartItem {
 
     @PrimaryGeneratedColumn()
     id! : number
 
     @Column("bigint")
-    price! : bigint
+    price! : number
 
     @Column("bigint")
-    discount!: bigint
+    discount!: number
 
     @Column("bigint")
     quantity!: number;
-
-    @Column(() => Audit)
-    audit!: Audit;
 
     @ManyToOne(() => Cart, cart => cart.cartItems)
     cart!: Cart;

@@ -1,22 +1,26 @@
-import {BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Audit} from "./Audit";
+import {BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Product} from "./Product";
+import {IsNotEmpty, IsString} from "class-validator";
 
-@Entity({name: 'ProductCategory'})
-export class Category extends BaseEntity{
+@Entity({name: 'Category'})
+export class Category {
 
     @PrimaryGeneratedColumn()
-    id! : bigint
+    id! : number
 
     @Column("varchar", { length: 200 })
+    @IsString()
+    @IsNotEmpty()
     name!: string;
 
     @Column("varchar", { length: 200 })
+    @IsString()
+    @IsNotEmpty()
     description!: string;
 
-    @Column(() => Audit)
-    audit!: Audit;
+
 
     @OneToOne(() => Product, product => product.category)
     product!: Product;
+
 }

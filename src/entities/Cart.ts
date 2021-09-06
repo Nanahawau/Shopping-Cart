@@ -1,16 +1,18 @@
 import {BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Audit} from "./Audit";
 import {CartStatus} from "../enums/CartStatus";
 import {DiscountType} from "../enums/DiscountType";
 import {User} from "./User";
 import {CartItem} from "./CartItem";
+import {IsBoolean, IsNotEmpty, IsString} from "class-validator";
 
 @Entity({name: 'Cart'})
-export class Cart extends BaseEntity {
+export class Cart  {
     @PrimaryGeneratedColumn()
     id!: bigint
 
     @Column("varchar", { length: 200 })
+    @IsString()
+    @IsNotEmpty()
     sessionId!: string;
 
     @Column("bigint")
@@ -21,10 +23,9 @@ export class Cart extends BaseEntity {
         enum: CartStatus,
         default: CartStatus.ACTIVE
     })
+    @IsBoolean()
     status!: CartStatus;
 
-    @Column(() => Audit)
-    audit!: Audit;
 
     @OneToMany(() => CartItem, cartItem => cartItem.cart)
     cartItems!: CartItem[];

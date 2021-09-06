@@ -2,12 +2,13 @@ import express from "express";
 
 export abstract class BaseRouteConfig {
     app: express.Application;
-    private _name: string;
+    _name: string;
 
 
     constructor(app: express.Application, name: string) {
         this.app = app;
         this._name = name;
+        this.configureRoutes();
     }
 
 
