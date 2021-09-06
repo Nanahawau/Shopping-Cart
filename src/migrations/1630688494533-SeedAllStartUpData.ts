@@ -27,6 +27,7 @@ import {
     ProductVariantsSeed13R,
     ProductVariantsSeed13W
 } from "../seeders/productvariants.seed";
+import {hash} from "argon2";
 
 
 
@@ -38,7 +39,11 @@ export class SeedAllStartUpData1630688494533 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
 
-        const user = await getConnection().getRepository(User).save(UserSeed);
+        const passwordHash =  await hash('admin');
+        const user : any = UserSeed;
+        user.password = passwordHash;
+        await getConnection().getRepository(User).save(user);
+
         const inventory = await getConnection().getRepository(Inventory).save(InventorySeed);
         const brand = await getConnection().getRepository(Brand).save(BrandSeed);
 

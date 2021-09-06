@@ -8,12 +8,7 @@ import {IsBoolean, IsNotEmpty, IsString} from "class-validator";
 @Entity({name: 'Cart'})
 export class Cart  {
     @PrimaryGeneratedColumn()
-    id!: bigint
-
-    @Column("varchar", { length: 200 })
-    @IsString()
-    @IsNotEmpty()
-    sessionId!: string;
+    id!: number
 
     @Column("bigint")
     total!: bigint;

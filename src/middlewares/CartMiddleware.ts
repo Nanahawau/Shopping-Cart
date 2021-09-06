@@ -1,18 +1,16 @@
-import debug from "debug";
 import express from "express";
 import ProductService from "../services/ProductService";
 import {StatusCodes} from "../enums/StatusCodes";
 import {ErrorResponse} from "../models/ErrorResponse";
+import CartService from "../services/CartService";
 
-const log: debug.IDebugger = debug('app:product-controller');
-
-class ProductMiddleware {
-    async validateProductExists(request: express.Request,
+class CartMiddleware {
+    async validateCartExists(request: express.Request,
                                 response: express.Response,
                                 next: express.NextFunction) {
 
-        const product = await ProductService.readById(request.body.id);
-        if(!product) {
+        const cartItem = await CartService.findById(request.body.id);
+        if(!cartItem) {
             response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(404, 'Bad Request', []))
         } else {
             next();
@@ -20,15 +18,15 @@ class ProductMiddleware {
 
     }
 
-    async extractProductId(
+    async extractCartId (
         request: express.Request,
         response: express.Response,
         next: express.NextFunction
     ) {
-        request.body.id = request.params.productId;
+        request.body.id = request.params.itemId;
         next();
     }
 }
 
 
-export default new ProductMiddleware();
+export default new CartMiddleware();

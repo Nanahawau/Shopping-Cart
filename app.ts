@@ -24,6 +24,7 @@ import helmet from 'helmet';
 import databaseConfig from "./src/utilities/database/connection";
 import {createConnection} from "typeorm";
 import {ProductRoutes} from "./src/routes/ProductRoutes";
+import {AuthRoutes} from "./src/routes/AuthRoutes";
 
 
 // Module that helps load env variables from .env file
@@ -58,6 +59,7 @@ const loggerOptions: expressWinston.LoggerOptions = {
 app.use(expressWinston.logger(loggerOptions));
 routes.push(new ProductRoutes(app));
 routes.push(new CartRoutes(app));
+routes.push(new AuthRoutes(app));
 
 
 /**

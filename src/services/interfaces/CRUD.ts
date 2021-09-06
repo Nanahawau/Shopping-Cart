@@ -5,4 +5,5 @@ export interface CRUD {
     readById: (id: string) => Promise<any>;
     deleteById: (id: string) => Promise<string>;
     patchById: (id: string, resource: any) => Promise<string>;
+    findByEmail: (email: string) => Promise<string>;
 }

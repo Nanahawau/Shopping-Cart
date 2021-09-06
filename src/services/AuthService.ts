@@ -1,28 +1,14 @@
-import {CRUD} from "./interfaces/CRUD";
+import {getConnection, getCustomRepository} from "typeorm";
+import {User} from "../entities/User";
+import {UserRepository} from "../repositories/UserRepository";
 
-class AuthService implements CRUD {
-    create(resource: any): Promise<any> {
-        return Promise.resolve(undefined);
+class AuthService {
+
+    findByEmail(email: string): Promise<any> {
+        return getConnection().getRepository(User).findOne(email);
     }
 
-    deleteById(id: string): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    list(limit: number, page: number): Promise<any> {
-        return Promise.resolve(undefined);
-    }
-
-    patchById(id: string, resource: any): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    putById(id: string, resource: any): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    readById(id: string): Promise<any> {
-        return Promise.resolve(undefined);
-    }
 
 }
+
+export default new AuthService();

@@ -1,28 +1,25 @@
 import {CRUD} from "./interfaces/CRUD";
+import {User} from "../entities/User";
+import {CartStatus} from "../enums/CartStatus";
+import {getConnection} from "typeorm";
+import {Cart} from "../entities/Cart";
+import {CartItem} from "../entities/CartItem";
 
-class CartService implements CRUD {
-    create(resource: any): Promise<any> {
-        return Promise.resolve(undefined);
+class CartService  {
+
+    findCartByUserAndStatus(user: User, status: CartStatus) {
+        return getConnection().getRepository(Cart).find({
+            where: [
+                { status: status, user: user}
+            ],
+            relations: ['cartItems', 'cartItems.product'],
+        })
     }
 
-    deleteById(id: string): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    list(limit: number, page: number): Promise<any> {
-        return Promise.resolve(undefined);
-    }
-
-    patchById(id: string, resource: any): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    putById(id: string, resource: any): Promise<string> {
-        return Promise.resolve("");
-    }
-
-    readById(id: string): Promise<any> {
-        return Promise.resolve(undefined);
+    findById(id: number) {
+        return getConnection().getRepository(CartItem).findOne(id);
     }
 
 }
+
+export default new CartService();

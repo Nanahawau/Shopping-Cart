@@ -23,12 +23,6 @@ export class User {
     @IsNotEmpty()
     password!: string;
 
-    @Column("varchar", { length: 200 })
-    @IsString()
-    @IsNotEmpty()
-    salt!: string;
-
-
     @OneToMany(() => Cart, cart => cart.user)
     carts!: Cart[];
 

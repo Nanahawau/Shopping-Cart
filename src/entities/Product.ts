@@ -14,6 +14,7 @@ import {Discount} from "./Discount";
 import {ProductVariation} from "./ProductVariation";
 import {IsIn, IsInt, IsNotEmpty, IsString} from "class-validator";
 import {Brand} from "./Brand";
+import {CartItem} from "./CartItem";
 
 
 @Entity({name: 'Product'})
@@ -51,6 +52,10 @@ export class Product {
     @OneToOne(() => Discount, discount => discount.product)
     @JoinColumn()
     discount!: Discount;
+
+    @OneToOne(() => CartItem, cartItem => cartItem.product)
+    cartItem!: CartItem;
+
 
     @OneToMany(() => ProductVariation, productVariation => productVariation.product)
     productVariations!: ProductVariation [];
