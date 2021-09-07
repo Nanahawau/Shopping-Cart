@@ -8,6 +8,12 @@ import {error} from "winston";
 const jwtSecret: string = process.env.JWT_SECRET;
 class JWTMiddleware {
 
+    /**
+     * Verify the JWT token on all requests
+     * @param request
+     * @param response
+     * @param next
+     */
     validJWTNeeded(
         request: express.Request,
         response: express.Response,

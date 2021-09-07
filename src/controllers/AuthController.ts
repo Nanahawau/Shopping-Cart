@@ -36,18 +36,20 @@ class AuthController {
                     .status(401)
                     .send(new ErrorResponse(401, 'Password is incorrect', ''));
             }
+
+            const token = jwt.sign(request.body, jwtSecret, {
+                expiresIn: tokenExpirationInSeconds,
+            });
+            return response
+                .status(201)
+                .send({accessToken: token, expiry: tokenExpirationInSeconds});
         }
         catch (err) {
+            console.log(err);
             log('createJWT error: %O', err);
             return response.status(500).send();
         }
 
-        const token = jwt.sign(request.body, jwtSecret, {
-            expiresIn: tokenExpirationInSeconds,
-        });
-        return response
-            .status(201)
-            .send({accessToken: token, expiry: tokenExpirationInSeconds});
     }
 }
 

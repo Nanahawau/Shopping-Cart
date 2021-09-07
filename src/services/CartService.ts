@@ -41,9 +41,16 @@ class CartService {
      * @param id
      */
     findById(id: number): Promise<any> {
-        return getRepository(CartItem).findOne(id);
+        return getRepository(Cart).findOne(id);
     }
 
+    /**
+     * This method finds cart by id
+     * @param id
+     */
+    findCartItemById(id: number): Promise<any> {
+        return getRepository(CartItem).findOne(id);
+    }
 
     /**
      * This method creates a cart

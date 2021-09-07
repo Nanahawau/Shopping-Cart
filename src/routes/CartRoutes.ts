@@ -18,25 +18,31 @@ export class CartRoutes extends BaseRouteConfig {
 
     configureRoutes(): express.Application {
         this.app.route('/cart/items')
-            .get(JWTMiddleware.validJWTNeeded,
-                CartController.getCartItems)
-            .post([
+            .get(
+                JWTMiddleware.validJWTNeeded,
+                CartController.getCartItems
+            )
+            .post(
+                [
                 body('productVariantId').isInt(),
                 body('quantity').isInt(),
                 JWTMiddleware.validJWTNeeded,
                 ProductMiddleware.validateProductVariantExists,
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 CartController.addToCartItems
-            ]);
+            ]
+            );
 
         this.app.param(`itemId`, CartMiddleware.extractCartItemId);
         this.app.route('/cart/items/:itemId')
+            .all(CartMiddleware.validateCartItemExists)
             .delete(JWTMiddleware.validJWTNeeded,
                 CartController.deleteCartItem)
 
 
         this.app.param(`cartId`, CartMiddleware.extractCartId);
         this.app.route(`/cart/:cartId`)
+            .all(CartMiddleware.validateCartExists)
             .delete(JWTMiddleware.validJWTNeeded,
                     CartController.deleteCart)
 
