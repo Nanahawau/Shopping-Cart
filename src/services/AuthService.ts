@@ -6,14 +6,13 @@ import {CartItem} from "../entities/CartItem";
 
 class AuthService {
 
+    /**
+     * This method finds a user by email
+     * @param email
+     */
     findByEmail(email: string): Promise<any> {
         return getCustomRepository(UserRepository).findByEmail(email);
     }
-
-
-    // findByEmail(email: string): Promise<any> {
-    //     return getConnection().getRepository(User).findOneOrFail(email);
-    // }
 }
 
 export default new AuthService();

@@ -5,7 +5,6 @@ export const ProductVariantsSeed13W =
         SKU: 'W-13',
         price: 1400.00,
         expiry: new Date()
-        // audit: auditSeed,
     };
 export const ProductVariantsSeed13B = {
     name: '13 inch black',
@@ -13,8 +12,6 @@ export const ProductVariantsSeed13B = {
     SKU: 'B-13',
     price: 1400.00,
     expiry: new Date()
-
-    // audit: auditSeed,
 };
 export const ProductVariantsSeed13R = {
     name: '13 inch red',
@@ -22,7 +19,6 @@ export const ProductVariantsSeed13R = {
     SKU: 'R-13',
     price: 1400.00,
     expiry: new Date()
-    // audit: auditSeed,
 };
 
 
@@ -32,5 +28,4 @@ export const ProductVariantsDrinks = {
     SKU: 'PCN-00',
     price: 1000.00,
     expiry: new Date()
-    // audit: auditSeed,
 };

@@ -9,6 +9,11 @@ const log: debug.IDebugger = debug('app:product-controller');
 
 
 class ProductController {
+    /**
+     * Get all Products
+     * @param request
+     * @param response
+     */
     async getAllProducts(request: express.Request, response: express.Response) {
         try {
             const products = await ProductService.list(parseInt(<string>request.query.page), parseInt(<string>request.query.limit));
@@ -16,12 +21,17 @@ class ProductController {
         } catch (error) {
             log(error)
             return response
-                .status(200)
+                .status(500)
                 .send(new ErrorResponse(100, `An error occurred while fetching Products`, ''));
         }
 
     }
 
+    /**
+     * Get a Product
+     * @param request
+     * @param response
+     */
     async getAProduct(request: express.Request, response: express.Response) {
         try {
             const product = await ProductService.readById(request.params.productId);
@@ -29,8 +39,8 @@ class ProductController {
         }catch (error) {
             log(error)
             return response
-                .status(200)
-                .send(new ErrorResponse(100, `An error occurred while fetching Products`, ''));
+                .status(500)
+                .send(new ErrorResponse(100, `An error occurred while fetching Product`, ''));
         }
 
     }

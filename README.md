@@ -17,7 +17,7 @@ testing purposes.
 
 
 
-### Prerequisites
+### Technologies
 
 ```
 * MYSQL

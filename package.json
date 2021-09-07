@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon app.ts",
     "build": "npx tsc",
-    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run"
+    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -37,7 +38,9 @@
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "14.0.13",
+    "chai": "^4.3.4",
     "nodemon": "^2.0.12",
+    "nyc": "^15.1.0",
     "source-map-support": "^0.5.19",
     "ts-node": "^10.2.1",
     "tslint": "^6.1.3",

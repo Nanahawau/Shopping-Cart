@@ -14,32 +14,40 @@ const tokenExpirationInSeconds: number = process.env.TOKEN_EXPIRATION;
 
 class AuthController {
 
+    /**
+     * login method
+     * @param request
+     * @param response
+     */
     async login(request: express.Request, response: express.Response) {
         try {
+            // find user by email
             const user = await AuthService.findByEmail(request.body.email);
-            if (user) {
-                if (await verify(user.password, request.body.password)) {
-                    const token = jwt.sign(request.body, jwtSecret, {
-                        expiresIn: tokenExpirationInSeconds,
-                    });
-                    return response
-                        .status(201)
-                        .send({accessToken: token, expiry: tokenExpirationInSeconds});
-                } else {
-                    return response
-                        .status(401)
-                        .send(new ErrorResponse(401, 'Password is incorrect', ''));
-                }
-            } else {
+
+            // User validation : check if user doesn't exist
+            if (!user) {
                 return response
                     .status(401)
                     .send(new ErrorResponse(401, `User doesn't exist`, ''));
             }
-
-        } catch (err) {
+            // Validate Password
+            if (!await verify(user.password, request.body.password)) {
+                return response
+                    .status(401)
+                    .send(new ErrorResponse(401, 'Password is incorrect', ''));
+            }
+        }
+        catch (err) {
             log('createJWT error: %O', err);
             return response.status(500).send();
         }
+
+        const token = jwt.sign(request.body, jwtSecret, {
+            expiresIn: tokenExpirationInSeconds,
+        });
+        return response
+            .status(201)
+            .send({accessToken: token, expiry: tokenExpirationInSeconds});
     }
 }
 
