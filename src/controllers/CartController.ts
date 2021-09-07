@@ -17,28 +17,26 @@ class CartController {
      * @param response
      */
     async getCartItems(request: express.Request, response: express.Response) {
-
-        let cart;
-
         try {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
 
             // Fetch active cart of logged in user
-            cart = await CartService.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
+           const cart = await CartService.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
 
             // Check if user has an items in cart
             if (cart.length == 0) {
                 return response.status(200).send(new Response(200, 'User has no item in cart', cart));
             }
+
+
+            return response.status(200).send(new Response(200, 'Success', cart));
         } catch (error) {
             log('getCartItems error: %O', error);
             return response
                 .status(500)
                 .send(new ErrorResponse(100, `An error occurred while fetching Cart items`, ''));
         }
-
-            return response.status(200).send(new Response(200, 'Success', cart));
     }
 
     /**
@@ -48,15 +46,13 @@ class CartController {
      */
     async addToCartItems(request: express.Request, response: express.Response) {
 
-        let cart, productVariant, cartItem;
-
         try {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
             // Get active cart of logged In user
-            cart = await CartService.findCartByUserAndStatus(user, CartStatus.ACTIVE);
+            const cart = await CartService.findCartByUserAndStatus(user, CartStatus.ACTIVE);
             // Get product variant
-            productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
+            const productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
 
             // if a cart doesn't exist for user, create one and add item
             if (!cart) {
@@ -65,7 +61,7 @@ class CartController {
             }
 
             // Check if Product variant already exists in cart.
-            cartItem = await CartService.isProductVariantInCart(productVariant);
+            const cartItem = await CartService.isProductVariantInCart(productVariant);
 
             // if yes, increase quantity of variant
             if (cartItem) {
@@ -73,14 +69,15 @@ class CartController {
                 return response.status(200).send(new Response(200, 'Success', []));
             }
 
+            // add a new item to cart.
+            await CartService.addToCartItems(cart, request.body.quantity, productVariant);
+            return response.status(200).send(new Response(200, 'Success', []));
+
         } catch (error) {
             log('addToCartItems', error)
             return response.status(500).send(new Response(100, 'An error occurred while adding item to cart', []));
         }
 
-            // add a new item to cart.
-            await CartService.addToCartItems(cart, request.body.quantity, productVariant);
-            return response.status(200).send(new Response(200, 'Success', []));
     }
 
     /**

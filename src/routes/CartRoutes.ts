@@ -25,7 +25,7 @@ export class CartRoutes extends BaseRouteConfig {
             .post(
                 [
                 body('productVariantId').isInt(),
-                body('quantity').isInt(),
+                body('quantity').isInt({min: 1}),
                 JWTMiddleware.validJWTNeeded,
                 ProductMiddleware.validateProductVariantExists,
                 BodyValidationMiddleware.verifyBodyFieldsErrors,

@@ -3,16 +3,13 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 // @ts-ignore
 import app from '../app';
-
-// Configure chai
-chai.use(chaiHttp);
 chai.should();
 
 describe("AuthController", () => {
     describe("POST /login", () => {
         //
         it("Should fail if login credentials is invalid", (done) => {
-            chai.request(app)
+            supertest(app)
                 .post('/login')
                 .send({
                     email: 'admin@example.com',
