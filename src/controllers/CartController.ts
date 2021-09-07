@@ -48,7 +48,7 @@ class CartController {
      */
     async addToCartItems(request: express.Request, response: express.Response) {
 
-        let cart, productVariant;
+        let cart, productVariant, cartItem;
 
         try {
             // Get logged in user
@@ -62,7 +62,12 @@ class CartController {
                 await CartService.createCart(user, request.body.quantity, productVariant);
             }
 
-            // TODO: check if product variant exists in cart, then increment quantity
+            // Check if Product variant already exists in cart.
+            cartItem = await CartService.isProductVariantInCart(productVariant);
+
+            if (cartItem) {
+                await CartService.increaseQuantity(cartItem, request.body.quantity);
+            }
 
         } catch (error) {
             log('addToCartItems', error)

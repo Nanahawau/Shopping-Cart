@@ -8,13 +8,11 @@ import {
 } from "typeorm";
 // @ts-ignore
 import {Audit} from './Audit';
-import {Inventory} from "./Inventory";
 import {Category} from "./Category";
-import {Discount} from "./Discount";
 import {ProductVariation} from "./ProductVariation";
 import {IsIn, IsInt, IsNotEmpty, IsString} from "class-validator";
 import {Brand} from "./Brand";
-import {CartItem} from "./CartItem";
+
 
 
 @Entity({name: 'Product'})
@@ -33,13 +31,6 @@ export class Product {
     @IsNotEmpty()
     description!: string;
 
-    // @Column("bigint")
-    // @IsInt()
-    // actualPrice!: number;
-
-    @OneToOne(() => Inventory, inventory => inventory.product)
-    @JoinColumn()
-    inventory!: Inventory;
 
     @OneToOne(() => Brand, brand => brand.product)
     @JoinColumn()
@@ -49,9 +40,6 @@ export class Product {
     @JoinColumn()
     category!: Category;
 
-    @OneToOne(() => Discount, discount => discount.product)
-    @JoinColumn()
-    discount!: Discount;
 
 
     @OneToMany(() => ProductVariation, productVariation => productVariation.product)
