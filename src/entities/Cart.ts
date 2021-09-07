@@ -21,9 +21,7 @@ export class Cart  {
     @IsBoolean()
     status!: CartStatus;
 
-    @OneToMany(() => CartItem, cartItem => cartItem.cart, {
-        onDelete: "CASCADE"
-    })
+    @OneToMany(() => CartItem, cartItem => cartItem.cart, )
     cartItems!: CartItem[];
 
     @ManyToOne(() => User, user => user.carts)

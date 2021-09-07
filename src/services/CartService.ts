@@ -111,7 +111,7 @@ class CartService {
      * @param quantity
      */
     async increaseQuantity (cartItem : CartItem, quantity: number) {
-        cartItem.quantity += parseInt(String(quantity));
+        cartItem.quantity = parseInt(String(cartItem.quantity)) + parseInt(String(quantity));
         await getRepository(CartItem).save(cartItem);
     }
 

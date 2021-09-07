@@ -58,21 +58,27 @@ class CartController {
             // Get product variant
             productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
 
+            // if a cart doesn't exist for user, create one and add item
             if (!cart) {
                 await CartService.createCart(user, request.body.quantity, productVariant);
+                return response.status(200).send(new Response(200, 'Success', []));
             }
 
             // Check if Product variant already exists in cart.
             cartItem = await CartService.isProductVariantInCart(productVariant);
 
+            // if yes, increase quantity of variant
             if (cartItem) {
                 await CartService.increaseQuantity(cartItem, request.body.quantity);
+                return response.status(200).send(new Response(200, 'Success', []));
             }
 
         } catch (error) {
             log('addToCartItems', error)
             return response.status(500).send(new Response(100, 'An error occurred while adding item to cart', []));
         }
+
+            // add a new item to cart.
             await CartService.addToCartItems(cart, request.body.quantity, productVariant);
             return response.status(200).send(new Response(200, 'Success', []));
     }
