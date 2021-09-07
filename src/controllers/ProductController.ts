@@ -16,7 +16,7 @@ class ProductController {
      */
     async getAllProducts(request: express.Request, response: express.Response) {
         try {
-            const products = await ProductService.list(parseInt(<string>request.query.page), parseInt(<string>request.query.limit));
+            const products = await ProductService.list(parseInt(<string>request.query.limit), parseInt(<string>request.query.page));
             return response.status(StatusCodes.OK).send(new Response(StatusCodes.OK, "Success", products));
         } catch (error) {
             log(error)

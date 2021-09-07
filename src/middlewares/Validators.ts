@@ -1,12 +1,14 @@
-import {validate} from "class-validator";
+
 import express from "express";
-import {StatusCodes} from "../enums/StatusCodes";
 import {ErrorResponse} from "../models/ErrorResponse";
 import {query, body, check, validationResult} from 'express-validator'
 
 
 class Validators {
 
+    /**
+     * This method validates query params for Products
+     */
     public validate =
             [query('page').not().isEmpty().withMessage('Page is required'),
                 query('limit').not().isEmpty().withMessage('Limit is required')]
@@ -26,6 +28,12 @@ class Validators {
     }
 
 
+    /**
+     * This method validates query params for Products
+     * @param request
+     * @param response
+     * @param next
+     */
     async length(request: express.Request,
                                    response: express.Response,
                                    next: express.NextFunction) {
