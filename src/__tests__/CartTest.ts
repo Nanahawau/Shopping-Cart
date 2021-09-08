@@ -5,14 +5,14 @@ const request = require("supertest");
 let server: any;
 
 describe("CartController", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await TestHelper.instance.setupTestDB();
 
         const port = process.env.TEST_PORT ?? 4000;
         server = app.listen(port);
     });
 
-    afterAll( (done) => {
+    afterEach( (done) => {
          TestHelper.instance.teardownTestDB();
          server.close(done);
     });
@@ -75,52 +75,20 @@ describe("CartController", () => {
         });
     });
 
-    describe ("DELETE: /cart/items/:itemId", () => {
-        it(`should return 200 if cart items doesn't exist`, async () => {
+    describe ("DELETE: /cart",  () => {
+
+        it(`should return 200 if cart is deleted successfully`, async () => {
             const result = async () => {
                 const response = await request(server).post('/login')
                     .send({email: 'user@gmail.com', password: 'admin'});
                 return response.body.accessToken;
             }
 
-
-
-
             const authToken = await result();
             const response = await request(server)
-                .delete(`/cart/items/30`)
+                .delete(`/cart`)
                 .set('Authorization', `Bearer ${authToken}`)
             expect(response.statusCode).toEqual(200);
-        });
-
-        //TODO: returns a 200, if item exists
-        // it(`should return 200 if cart items doesn't exist`, async () => {
-        //     const result = async () => {
-        //         const response = await request(server).post('/login')
-        //             .send({email: 'user@gmail.com', password: 'admin'});
-        //         return response.body.accessToken;
-        //     }
-        //
-        //     const authToken = await result();
-        //     const response = await request(server)
-        //         .delete(`/cart/items/30`)
-        //         .set('Authorization', `Bearer ${authToken}`)
-        //     expect(response.statusCode).toEqual(404);
-        // });
-    });
-
-    describe ("DELETE: /cart", () => {
-        it(`should return 404 if cart doesn't exist`, async () => {
-            const result = async () => {
-                const response = await request(server).post('/login')
-                    .send({email: 'user@gmail.com', password: 'admin'});
-                return response.body.accessToken;
-            }
-            const authToken = await result();
-            const response = await request(server)
-                .delete('/cart')
-                .set('Authorization', `Bearer ${authToken}`)
-            expect(response.statusCode).toEqual(404);
         });
     });
 });

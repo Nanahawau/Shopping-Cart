@@ -5,14 +5,14 @@ const request = require("supertest");
 let server: any;
 
 describe("AuthController", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await TestHelper.instance.setupTestDB();
 
         const port = process.env.TEST_PORT ?? 4000;
         server = app.listen(port);
     });
 
-    afterAll( (done) => {
+    afterEach( (done) => {
          TestHelper.instance.teardownTestDB();
          server.close(done);
     });
