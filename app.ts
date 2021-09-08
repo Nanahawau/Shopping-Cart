@@ -3,10 +3,11 @@
  */
 import dotenv from 'dotenv';
 
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-    throw dotenvResult.error;
-}
+
+dotenv.config();
+
+
+
 
 import express, {Application} from 'express';
 import cors from 'cors';
@@ -25,6 +26,8 @@ import databaseConfig from "./src/utilities/database/connection";
 import {createConnection} from "typeorm";
 import {ProductRoutes} from "./src/routes/ProductRoutes";
 import {AuthRoutes} from "./src/routes/AuthRoutes";
+import * as process from "process";
+import path from "path";
 
 
 // Module that helps load env variables from .env file
@@ -74,13 +77,3 @@ const runningMessage = `Server running at http://localhost:${PORT}`;
 app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send(runningMessage)
 });
-
-
-
-
-// export default server.listen(PORT, () => {
-//     debugLog(`Server running at http://localhost:${PORT}`);
-//     routes.forEach((route: BaseRouteConfig) => {
-//         console.log(`Routes configured for ${route.name}`);
-//     });
-// });

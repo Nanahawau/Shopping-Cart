@@ -58,7 +58,7 @@
     "@types/jest": "^27.0.1",
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^8.5.5",
-    "@types/node": "14.0.13",
+    "@types/node": "^14.17.15",
     "better-sqlite3": "^7.4.3",
     "jest": "^27.1.0",
     "nodemon": "^2.0.12",
