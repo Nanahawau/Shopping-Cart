@@ -40,10 +40,9 @@ export class CartRoutes extends BaseRouteConfig {
                 CartController.deleteCartItem)
 
 
-        this.app.param(`cartId`, CartMiddleware.extractCartId);
-        this.app.route(`/cart/:cartId`)
-            .all(CartMiddleware.validateCartExists)
+        this.app.route(`/cart`)
             .delete(JWTMiddleware.validJWTNeeded,
+                     CartMiddleware.validateCartExists,
                     CartController.deleteCart)
 
         return this.app;

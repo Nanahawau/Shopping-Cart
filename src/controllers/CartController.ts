@@ -20,16 +20,12 @@ class CartController {
         try {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
-
             // Fetch active cart of logged in user
            const cart = await CartService.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
-
             // Check if user has an items in cart
             if (cart.length == 0) {
                 return response.status(200).send(new Response(200, 'User has no item in cart', cart));
             }
-
-
             return response.status(200).send(new Response(200, 'Success', cart));
         } catch (error) {
             log('getCartItems error: %O', error);
@@ -53,27 +49,31 @@ class CartController {
             const cart = await CartService.findCartByUserAndStatus(user, CartStatus.ACTIVE);
             // Get product variant
             const productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
-
             // if a cart doesn't exist for user, create one and add item
             if (!cart) {
                 await CartService.createCart(user, request.body.quantity, productVariant);
-                return response.status(200).send(new Response(200, 'Success', []));
+                return response.status(201).send(new Response(200, 'Success', []));
             }
-
             // Check if Product variant already exists in cart.
             const cartItem = await CartService.isProductVariantInCart(productVariant);
 
+
             // if yes, increase quantity of variant
             if (cartItem) {
-                await CartService.increaseQuantity(cartItem, request.body.quantity);
+                // check if addition of requested quantity does not exceed stock level
+                if (!CartService.isQuantityGreaterThanStockLevel(cartItem, productVariant, request.body.quantity)) {
+                    return response.status(200).send(new Response(100, 'Out of stock', []));
+                }
+
+                await CartService.increaseQuantity(cartItem, request.body.quantity, cart);
                 return response.status(200).send(new Response(200, 'Success', []));
             }
-
             // add a new item to cart.
             await CartService.addToCartItems(cart, request.body.quantity, productVariant);
-            return response.status(200).send(new Response(200, 'Success', []));
+            return response.status(201).send(new Response(200, 'Success', []));
 
         } catch (error) {
+            console.log(error);
             log('addToCartItems', error)
             return response.status(500).send(new Response(100, 'An error occurred while adding item to cart', []));
         }
@@ -88,7 +88,6 @@ class CartController {
 
     async deleteCartItem(request: express.Request, response: express.Response) {
         try {
-
             await CartService.deleteCartItem(request.params.itemId);
             return response.status(200).send(new Response(200, 'Success', []));
 
@@ -106,7 +105,10 @@ class CartController {
      */
     async deleteCart(request: express.Request, response: express.Response) {
         try {
-            await CartService.deleteCart(request.params.cartId);
+            // Get logged in user
+            const user = await AuthService.findByEmail(response.locals.jwt.email);
+
+            await CartService.deleteCart(user);
             return response.status(200).send(new Response(200, 'Success', []));
         } catch (error) {
             log(error)

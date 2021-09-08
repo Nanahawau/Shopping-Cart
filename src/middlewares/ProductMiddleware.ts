@@ -13,7 +13,7 @@ class ProductMiddleware {
 
         const product = await ProductService.readById(request.body.id);
         if(!product) {
-            response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(400, 'Bad Request', []))
+            response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(404, 'Not Found'))
         } else {
             next();
         }
@@ -26,12 +26,13 @@ class ProductMiddleware {
 
         const productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
         if(!productVariant) {
-            response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(400, 'Bad Request', []))
+            response.status(StatusCodes.NOT_FOUND).send(new ErrorResponse(404, 'Not Found'))
         } else {
             next();
         }
 
     }
+
 
     async extractProductId(
         request: express.Request,

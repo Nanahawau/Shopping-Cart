@@ -4,7 +4,7 @@ export class ErrorResponse {
     private errors: Object;
 
 
-    constructor(code: number, message: string, errors: Object) {
+    constructor(code: number, message: string, errors = {}) {
         this.code = code;
         this.message = message;
         this.errors = errors;

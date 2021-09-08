@@ -14,8 +14,8 @@ export class Cart  {
     total!: number;
 
     @Column({
-        type: "enum",
-        enum: CartStatus,
+        type: "varchar",
+        // enum: CartStatus,
         default: CartStatus.ACTIVE
     })
     @IsBoolean()

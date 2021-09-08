@@ -95,8 +95,9 @@ class CartService {
         cartItems.quantity = quantity;
         cartItems.productVariant = variant;
         const newCartItems = await getRepository(CartItem).save(cartItems);
-        cart.total = parseInt(String(cart.total)) + parseInt(String(variant.price));
+        cart.total = parseInt(String(cart.total)) + (parseInt(String(variant.price)) * parseInt(String(quantity)));
         cart.cartItems = [...cart.cartItems, newCartItems];
+
         return getRepository(Cart).save(cart);
     }
 
@@ -108,6 +109,7 @@ class CartService {
             where: [
                 {productVariant: variant}
             ],
+            relations: ['productVariant', 'cart']
         })
     }
 
@@ -117,9 +119,21 @@ class CartService {
      * @param cartItem
      * @param quantity
      */
-    async increaseQuantity (cartItem : CartItem, quantity: number) {
+    async increaseQuantity (cartItem : CartItem, quantity: number, cart: Cart) {
         cartItem.quantity = parseInt(String(cartItem.quantity)) + parseInt(String(quantity));
+        const total = parseInt(String(quantity)) * parseInt(String(cartItem.productVariant.price)) + parseInt(String(cartItem.cart.total));
+        cartItem.cart.total = parseInt(String(cartItem.cart.total)) + parseInt(String(total));
         await getRepository(CartItem).save(cartItem);
+        await this.increaseCartTotal(cart,  cartItem.cart.total);
+    }
+
+
+    /**
+     * increase cart total
+     */
+    async increaseCartTotal (cart: Cart, total : number) {
+        cart.total = total;
+        await getRepository(Cart).save(cart);
     }
 
     /**
@@ -127,7 +141,7 @@ class CartService {
      * @param itemId
      */
     async deleteCartItem(itemId: string): Promise<any> {
-        const cartItem = await getRepository(CartItem)
+        const cartItem = await getRepository(CartItem);
         return await cartItem.delete(itemId);
     }
 
@@ -135,10 +149,26 @@ class CartService {
      * This method deletes a cart
      * @param cartId
      */
-    async deleteCart(cartId: string): Promise<any> {
-        const cart = await getRepository(Cart);
-        return await cart.delete(cartId);
+    async deleteCart(user: User): Promise<any> {
+        // Fetch active cart of logged in user
+        const cart = await this.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
+        return await getRepository(Cart).delete(cart);
     }
+
+
+    /**
+     * Checks if quantity requested to be added to cart exceeds stock level
+     */
+    isQuantityGreaterThanStockLevel (cartItem: CartItem, variant: ProductVariation, quantity: number){
+        const quantityInCart = cartItem.quantity;
+        const stockLevel = variant.stockLevel;
+        if ((parseInt(String(quantityInCart)) + parseInt(String(quantity))) > parseInt(String(stockLevel))) {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }
 

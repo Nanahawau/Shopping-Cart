@@ -33,11 +33,10 @@ import {AuthRoutes} from "./src/routes/AuthRoutes";
  * App Variables
  */
 
-//TODO : fix debug
 const debugLog: debug.IDebugger = debug('app');
 const PORT: number = parseInt(process.env.PORT as string, 10);
-const app: express.Application = express();
-const server: http.Server = http.createServer(app);
+export const app: express.Application = express();
+// let server: http.Server = http.createServer(app);
 const routes: Array<BaseRouteConfig> = [];
 
 
@@ -57,6 +56,7 @@ const loggerOptions: expressWinston.LoggerOptions = {
 
 
 app.use(expressWinston.logger(loggerOptions));
+
 routes.push(new ProductRoutes(app));
 routes.push(new CartRoutes(app));
 routes.push(new AuthRoutes(app));
@@ -76,9 +76,11 @@ app.get('/', (req: express.Request, res: express.Response) => {
 });
 
 
-export default server.listen(PORT, () => {
-    debugLog(`Server running at http://localhost:${PORT}`);
-    routes.forEach((route: BaseRouteConfig) => {
-        console.log(`Routes configured for ${route.name}`);
-    });
-});
+
+
+// export default server.listen(PORT, () => {
+//     debugLog(`Server running at http://localhost:${PORT}`);
+//     routes.forEach((route: BaseRouteConfig) => {
+//         console.log(`Routes configured for ${route.name}`);
+//     });
+// });

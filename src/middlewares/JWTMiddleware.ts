@@ -31,9 +31,8 @@ class JWTMiddleware {
                     ) as Jwt;
                     next();
                 }
-            } catch (err) {
-                console.log(err);
-                return response.status(403).send(new ErrorResponse(403, err.message, ''));
+            } catch (error: any) {
+                return response.status(403).send(new ErrorResponse(403, error.message));
             }
         } else {
             return response.status(401).send();

@@ -98,7 +98,6 @@ export class SeedAllStartUpData1630688494533 implements MigrationInterface {
 
         const product1 = await getConnection().getRepository(Product).save(productItems1);
 
-        console.log(JSON.stringify(product) + 'product');
 
         const productVariantItemW : any = ProductVariantsSeed13W;
         productVariantItemW.variants = [size, color];
