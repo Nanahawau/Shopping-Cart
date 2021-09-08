@@ -12,7 +12,7 @@ which a user can add to, remove from and edit inside a cart.
 - **Framework** - Express
 - **ORM** - TypeORM
 - **Database** - MYSQL
-- **Test kit** - Mocha, Chai
+- **Test kit** - Jest, Supertest
 
 ## Getting Started
 
@@ -38,9 +38,16 @@ testing purposes.
    $ npm run migrate:up
 ```
 
-7. Go over Postman Docs for more information about endpoints [postmandocs](https://documenter.getpostman.com/view/9516731/U16gPSPw)
+7. Go over Postman Docs for more information about services [postmandocs](https://documenter.getpostman.com/view/9516731/U16gPSPw)
 
 
+## Test
+The application uses Jest and Supertest for testing. An in-memory sqlite database is used as
+the database of choice for testing activities. Run the command below. 
+
+```shellscript
+   $ npm test
+```
 
 ## Authors
 * **Nana Hawau Adeku** - [@Nana-Hawau](https://github.com/Nana-Hawau)
