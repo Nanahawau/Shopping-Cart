@@ -21,7 +21,7 @@ class CartController {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
             // Fetch active cart of logged in user
-           const cart = await CartService.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
+            const cart = await CartService.findCartItemByUserAndStatus(user, CartStatus.ACTIVE);
             // Check if user has an items in cart
             if (cart.length == 0) {
                 return response.status(200).send(new Response(200, 'User has no item in cart', cart));
@@ -77,7 +77,7 @@ class CartController {
                     quantity: request.body.quantity,
                 }));
         } catch (error) {
-            console.log(error);
+            log(error);
             log('addToCartItems', error)
             return response.status(500).send(new Response(100, 'An error occurred while adding item to cart'));
         }
@@ -96,7 +96,7 @@ class CartController {
             return response.status(200).send(new Response(200, 'Success', []));
 
         } catch (error) {
-            console.log(error)
+            log(error)
             return response.status(500).send(new Response(100, 'An error occurred while deleting item from cart'));
         }
     }
@@ -112,7 +112,7 @@ class CartController {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
 
-            console.log(user.carts.length + 'carts');
+            log(user.carts.length + 'carts');
             // check if user has no cart
             if (user.carts.length == 0) {
                 // when user has no cart

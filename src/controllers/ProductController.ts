@@ -35,8 +35,8 @@ class ProductController {
     async getAProduct(request: express.Request, response: express.Response) {
         try {
             const product = await ProductService.readById(request.params.productId);
-           return response.status(StatusCodes.OK).send(new Response(StatusCodes.OK, "Success", product));
-        }catch (error) {
+            return response.status(StatusCodes.OK).send(new Response(StatusCodes.OK, "Success", product));
+        } catch (error) {
             log(error)
             return response
                 .status(500)

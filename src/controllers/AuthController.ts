@@ -43,8 +43,7 @@ class AuthController {
             return response
                 .status(201)
                 .send({accessToken: token, expiry: tokenExpirationInSeconds});
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
             log('createJWT error: %O', err);
             return response.status(500).send();

@@ -154,7 +154,6 @@ class CartService {
     async delete(itemId: string): Promise<any> {
         const cartItem = await this.findCartItemById(parseInt(itemId))
         if (cartItem) {
-            console.log(JSON.stringify(cartItem.cart) + "quantity")
             cartItem.cart.cartItems.length == 0? await this.removeCart(cartItem) :
                 await this.deleteCartItem(cartItem);
         }
