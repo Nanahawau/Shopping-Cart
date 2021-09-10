@@ -6,7 +6,7 @@ export class Response {
    private data!: object;
 
 
-    constructor(code: number, message: string, data: object) {
+    constructor(code: number, message: string, data = {}) {
         this.code = code;
         this.message = message;
         this.data = data;

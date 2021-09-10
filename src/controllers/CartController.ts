@@ -41,41 +41,45 @@ class CartController {
      * @param response
      */
     async addToCartItems(request: express.Request, response: express.Response) {
-
         try {
-            // Get logged in user
-            const user = await AuthService.findByEmail(response.locals.jwt.email);
-            // Get active cart of logged In user
-            const cart = await CartService.findCartByUserAndStatus(user, CartStatus.ACTIVE);
             // Get product variant
             const productVariant = await ProductService.findProductVariationsById(request.body.productVariantId);
-            // if a cart doesn't exist for user, create one and add item
+
+            if (CartService.isQuantityGreaterThanStockLevel(productVariant, request.body.quantity)) {
+                return response.status(400)
+                    .send(new Response(400, 'Quantity exceed currently available'));
+            }
+
+            // Get logged in user
+            const user = await AuthService.findByEmail(response.locals.jwt.email);
+
+            // Get active cart of logged In user
+            let cart = await CartService.findCartByUserAndStatus(user, CartStatus.ACTIVE);
+
+            // if user does not have a cart, create one while initializing it with the request body.
             if (!cart) {
-                await CartService.createCart(user, request.body.quantity, productVariant);
-                return response.status(201).send(new Response(200, 'Success', []));
-            }
-            // Check if Product variant already exists in cart.
-            const cartItem = await CartService.isProductVariantInCart(productVariant);
+                cart = await CartService.createCart(user, request.body.quantity, productVariant);
+            } else {
+                // Check if Product variant already exists in cart.
+                const cartItem = await CartService.isProductVariantInCart(productVariant);
 
-
-            // if yes, increase quantity of variant
-            if (cartItem) {
-                // check if addition of requested quantity does not exceed stock level
-                if (!CartService.isQuantityGreaterThanStockLevel(cartItem, productVariant, request.body.quantity)) {
-                    return response.status(200).send(new Response(100, 'Out of stock', []));
+                // if yes, increase quantity of variant.
+                if (cartItem) {
+                    await CartService.updateQuantity(cartItem, request.body.quantity, cart);
+                } else {
+                    await CartService.addToCartItems(cart, request.body.quantity, productVariant);
                 }
-
-                await CartService.increaseQuantity(cartItem, request.body.quantity, cart);
-                return response.status(200).send(new Response(200, 'Success', []));
             }
-            // add a new item to cart.
-            await CartService.addToCartItems(cart, request.body.quantity, productVariant);
-            return response.status(201).send(new Response(200, 'Success', []));
 
+            return response.status(201)
+                .send(new Response(201, 'Success', {
+                    id: cart.id,
+                    quantity: request.body.quantity,
+                }));
         } catch (error) {
             console.log(error);
             log('addToCartItems', error)
-            return response.status(500).send(new Response(100, 'An error occurred while adding item to cart', []));
+            return response.status(500).send(new Response(100, 'An error occurred while adding item to cart'));
         }
 
     }
@@ -88,12 +92,12 @@ class CartController {
 
     async deleteCartItem(request: express.Request, response: express.Response) {
         try {
-            await CartService.deleteCartItem(request.params.itemId);
+            await CartService.delete(request.params.itemId);
             return response.status(200).send(new Response(200, 'Success', []));
 
         } catch (error) {
-            log(error)
-            return response.status(500).send(new Response(100, 'An error occurred while deleting item from cart', []));
+            console.log(error)
+            return response.status(500).send(new Response(100, 'An error occurred while deleting item from cart'));
         }
     }
 
@@ -108,11 +112,19 @@ class CartController {
             // Get logged in user
             const user = await AuthService.findByEmail(response.locals.jwt.email);
 
+            console.log(user.carts.length + 'carts');
+            // check if user has no cart
+            if (user.carts.length == 0) {
+                // when user has no cart
+                return response.status(404).send(new Response(404, 'User has no cart', []));
+            }
+
             await CartService.deleteCart(user);
             return response.status(200).send(new Response(200, 'Success', []));
+
         } catch (error) {
             log(error)
-            return response.status(200).send(new Response(100, 'An error occurred while deleting cart', []));
+            return response.status(200).send(new Response(100, 'An error occurred while deleting cart'));
         }
     }
 

@@ -52,7 +52,7 @@ export class TestHelper {
             synchronize: true,
             migrations: ['src/migrations/**/*.ts'],
             migrationsRun: true,
-            // logging: true
+            logging: true
         });
 
     }
